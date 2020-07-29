@@ -7,8 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import vadim.shtukan.KafkaSocketAdapter.KafkaSocketAdapterApplication;
 import vadim.shtukan.KafkaSocketAdapter.controller.CommandListener;
 
 import javax.security.auth.login.LoginException;
@@ -64,7 +62,6 @@ public class WorkerSocketServerRunnable implements Runnable{
             this.disconnect();
             logger.info("Client disconnected in thread: " + Thread.currentThread().getId());
         } catch (IOException e) {
-            //report exception somewhere.
             this.disconnect();
             e.printStackTrace();
         }
@@ -83,9 +80,11 @@ public class WorkerSocketServerRunnable implements Runnable{
                 }
                 logger.debug("Read line from socket: " + readInputLine + " in thread: " + Thread.currentThread().getId());
 
-                //TODO BL hear
-                //Catch Exceptions!
-                commandListener.readCommand(readInputLine);
+                try {
+                    commandListener.readCommand(readInputLine);
+                }catch (Exception e){
+                    throw new SocketException(e.getMessage());
+                }
 
                 this.outStream.println("ER");
 
