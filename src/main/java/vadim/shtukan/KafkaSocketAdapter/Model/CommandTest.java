@@ -1,4 +1,4 @@
-package vadim.shtukan.KafkaSocketAdapter.model;
+package vadim.shtukan.KafkaSocketAdapter.Model;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 

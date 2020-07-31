@@ -1,31 +1,39 @@
-package vadim.shtukan.KafkaSocketAdapter.controller;
+package vadim.shtukan.KafkaSocketAdapter.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
-import vadim.shtukan.KafkaSocketAdapter.KafkaSocketAdapterApplication;
-import vadim.shtukan.KafkaSocketAdapter.service.ThreadPooledServer;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@ComponentScan(basePackages="vadim.shtukan.KafkaSocketAdapter")
-@PropertySource("classpath:/application.properties")
+//@RunWith(SpringRunner.class)
+//@ContextConfiguration(loader= SpringBootContextLoader.class)
+//@SpringBootApplication
+@SpringBootTest
 class CommandListenerTest {
+    //@Autowired
     private static CommandListener commandListener;
 
-    @BeforeAll
-    public static void beforeAll()  {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(CommandListenerTest.class);
-
-        commandListener = (CommandListener) ctx.getBean("commandListener", ctx);
-    }
+//    @BeforeAll
+//    public static void beforeAll()  {
+//        ApplicationContext ctx = new AnnotationConfigApplicationContext(CommandListenerTest.class);
+//
+//        commandListener = (CommandListener) ctx.getBean("commandListener", ctx);
+//    }
 
     @Test
     void readPolymorphicSocketCommand() {

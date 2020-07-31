@@ -1,11 +1,7 @@
-package vadim.shtukan.KafkaSocketAdapter.model;
+package vadim.shtukan.KafkaSocketAdapter.Model;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

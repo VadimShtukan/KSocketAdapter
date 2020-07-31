@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="vadim.shtukan.KafkaSocketAdapter" level="DEBUG" additivity="false">
+    <logger name="vadim.shtukan.KafkaSocketAdapter" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 

@@ -1,13 +1,11 @@
-package vadim.shtukan.KafkaSocketAdapter.service;
+package vadim.shtukan.KafkaSocketAdapter.Service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import vadim.shtukan.KafkaSocketAdapter.controller.CommandListener;
+import vadim.shtukan.KafkaSocketAdapter.Controller.CommandListener;
 
 import javax.security.auth.login.LoginException;
 import java.io.*;
@@ -18,14 +16,14 @@ import java.net.SocketException;
 @Scope("prototype")
 public class WorkerSocketServerRunnable implements Runnable{
 
-    protected final Socket clientSocket;
-    protected final String serverText;
+    protected Socket clientSocket;
+    protected String serverText;
     private BufferedReader inStream;
     private PrintWriter outStream;
     private InputStream input ;
     private OutputStream output;
     private static final Logger logger = LogManager.getLogger(WorkerSocketServerRunnable.class);
-    private final String socketSecurityKey;
+    private String socketSecurityKey;
     private static final int LOGIN_ATTEMPT = 2;
 
     @Autowired
@@ -39,6 +37,10 @@ public class WorkerSocketServerRunnable implements Runnable{
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
         this.socketSecurityKey= socketSecurityKey;
+    }
+
+
+    public WorkerSocketServerRunnable() {
     }
 
     /**
@@ -81,12 +83,16 @@ public class WorkerSocketServerRunnable implements Runnable{
                 logger.debug("Read line from socket: " + readInputLine + " in thread: " + Thread.currentThread().getId());
 
                 try {
-                    commandListener.readCommand(readInputLine);
+                    if(commandListener.readCommand(readInputLine)) {
+                        this.outStream.println("OK");
+                    }
+                    else{
+                        this.outStream.println("ER");
+                    }
                 }catch (Exception e){
-                    throw new SocketException(e.getMessage());
+                    logger.error("CommandListener.readCommand exception: " + e.getMessage());
+                    this.outStream.println("ER");
                 }
-
-                this.outStream.println("ER");
 
             }catch (SocketException e){
                 //breaker

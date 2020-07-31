@@ -1,4 +1,4 @@
-package vadim.shtukan.KafkaSocketAdapter.model;
+package vadim.shtukan.KafkaSocketAdapter.Model;
 
 //TEST
 public class NotRealised extends SocketCommand{

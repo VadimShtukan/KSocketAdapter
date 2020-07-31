@@ -1,4 +1,4 @@
-package vadim.shtukan.KafkaSocketAdapter.service;
+package vadim.shtukan.KafkaSocketAdapter.Service;
 
 
 
@@ -26,7 +26,7 @@ public class ThreadPooledServer implements Runnable{
     protected ServerSocket serverSocket = null;
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
-    protected final ExecutorService threadPool;
+    protected ExecutorService threadPool;
     @Value("${app.socket.maxSocketConnections}")
     protected int maxSocketConnections;
     @Value("${app.socket.socketSecurityKey}")
@@ -35,10 +35,11 @@ public class ThreadPooledServer implements Runnable{
 
     public ThreadPooledServer(ApplicationContext ctx){
         this.ctx = ctx;
-        this.threadPool = Executors.newFixedThreadPool(100);
     }
 
     public void run(){
+        this.threadPool = Executors.newFixedThreadPool(this.maxSocketConnections);
+
         synchronized(this){
             this.runningThread = Thread.currentThread();
         }
