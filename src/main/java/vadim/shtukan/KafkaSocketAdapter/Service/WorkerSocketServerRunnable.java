@@ -1,5 +1,7 @@
 package vadim.shtukan.KafkaSocketAdapter.Service;
 
+import io.prometheus.client.Counter;
+import io.prometheus.client.Histogram;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,18 @@ public class WorkerSocketServerRunnable implements Runnable{
     private static final Logger logger = LogManager.getLogger(WorkerSocketServerRunnable.class);
     private String socketSecurityKey;
     private static final int LOGIN_ATTEMPT = 2;
+
+    private static final Counter clientCommandErrorWorkerCounter = Counter.build()
+            .name("kadapter_worker_client_command_error_total")
+            .help("Количество ошибочных запросов от клиентов.")
+            .register();
+
+    private static final Histogram workerLatency = Histogram.build()
+            .buckets(0.005, 0.01, 0.05, 0.1, 0.5, 1)
+            .name("kadapter_worker_latency")
+            .help("Время, которое обрабатывался запрос от клиента(SCA).")
+            .register();
+    private Histogram.Timer requestTimer_workerLatency;
 
     @Autowired
     private CommandListener commandListener;
@@ -77,9 +91,11 @@ public class WorkerSocketServerRunnable implements Runnable{
         while(true) {
             try {
                 String readInputLine = this.inStream.readLine();
+
                 if(readInputLine == null){
                     throw new SocketException("Client return null");
                 }
+                requestTimer_workerLatency = workerLatency.startTimer();
                 logger.debug("Read line from socket: " + readInputLine + " in thread: " + Thread.currentThread().getId());
 
                 try {
@@ -87,12 +103,16 @@ public class WorkerSocketServerRunnable implements Runnable{
                         this.outStream.println("OK");
                     }
                     else{
+                        clientCommandErrorWorkerCounter.inc();
                         this.outStream.println("ER");
                     }
                 }catch (Exception e){
+                    clientCommandErrorWorkerCounter.inc();
+
                     logger.error("CommandListener.readCommand exception: " + e.getMessage());
                     this.outStream.println("ER");
                 }
+                requestTimer_workerLatency.observeDuration();
 
             }catch (SocketException e){
                 //breaker

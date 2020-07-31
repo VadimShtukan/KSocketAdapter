@@ -15,7 +15,7 @@ import vadim.shtukan.KafkaSocketAdapter.Service.WorkerSocketServerRunnable;
 public class CommandAddEventsController implements CommandOrchestrator<CommandAddEvents> {
     private static final Logger logger = LogManager.getLogger(WorkerSocketServerRunnable.class);
 
-    private static final Counter counterEventCommand = Counter.build()
+    private static final Counter eventCommandCounter = Counter.build()
             .name("sca_event_command_total")
             .help("Количество событий с контроллера, по EventType.")
             .labelNames("controllerId", "eventType")
@@ -26,20 +26,20 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
             .labelNames("controllerId")
             .name("sca_car_pass_kpp_latency")
             .help("Время, которое авто проверяется на КПП.").register();
-    Histogram.Timer requestTimer_carKppPassLatency;
+    private Histogram.Timer requestTimer_carKppPassLatency;
 
     private static final Histogram terminalOutOfWorkLatency = Histogram.build()
             .buckets(60, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 1560)
             .labelNames("controllerId")
             .name("sca_terminal_out_of_work_latency")
             .help("Время, которое не работал терминал.").register();
-    Histogram.Timer requestTimer_terminalOutOfWorkLatency;
+    private Histogram.Timer requestTimer_terminalOutOfWorkLatency;
 
     @Override
     public Boolean doCommand(CommandAddEvents commandAddEvents) {
         logger.debug("Run command addEvents");
 
-        counterEventCommand.labels(commandAddEvents.getControllerId().toString(), commandAddEvents.getEventType().toString()).inc();
+        eventCommandCounter.labels(commandAddEvents.getControllerId().toString(), commandAddEvents.getEventType().toString()).inc();
 
         this.carKppLatencyCalc(commandAddEvents);
 
@@ -74,10 +74,8 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
         }
 
         //Шлагбаум закрыт (конец отсчета времени)
-        if(commandAddEvents.getEventType() == EventCode.EV_BARR_AUTOCLOSED.getCode()){
+        if(requestTimer_carKppPassLatency != null && commandAddEvents.getEventType() == EventCode.EV_BARR_AUTOCLOSED.getCode()){
             requestTimer_carKppPassLatency.observeDuration();
         }
-
-
     }
 }
