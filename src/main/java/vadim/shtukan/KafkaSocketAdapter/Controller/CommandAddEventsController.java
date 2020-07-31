@@ -30,14 +30,14 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
             .register();
     private Histogram.Timer requestTimer_carKppPassLatency;
 
-    private static final Histogram terminalOutOfWorkLatency = Histogram
-            .build()
-            .buckets(60, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 1560)
-            .labelNames("controllerId")
-            .name("sca_terminal_out_of_work_latency")
-            .help("Время, которое не работал терминал.")
-            .register();
-    private Histogram.Timer requestTimer_terminalOutOfWorkLatency;
+//    private static final Histogram terminalOutOfWorkLatency = Histogram
+//            .build()
+//            .buckets(60, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 1560)
+//            .labelNames("controllerId")
+//            .name("sca_terminal_out_of_work_latency")
+//            .help("Время, которое не работал терминал.")
+//            .register();
+//    private Histogram.Timer requestTimer_terminalOutOfWorkLatency;
 
     @Override
     public Boolean doCommand(CommandAddEvents commandAddEvents) {
@@ -47,23 +47,23 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
 
         this.carKppLatencyCalc(commandAddEvents);
 
-        this.terminalOutOfWorkLatencyCalc(commandAddEvents);
+//        this.terminalOutOfWorkLatencyCalc(commandAddEvents);
 
         return true;
     }
 
-    /**
-     * Подсчет времени, которое не работал терминал
-     * @param commandAddEvents CommandAddEvents
-     */
-    private void terminalOutOfWorkLatencyCalc(CommandAddEvents commandAddEvents) {
-        if(commandAddEvents.getEventType() == EventCode.EV_TERM_POWER_ON.getCode()) {
-            requestTimer_terminalOutOfWorkLatency.observeDuration();
-        }
-        else {
-            requestTimer_terminalOutOfWorkLatency = terminalOutOfWorkLatency.labels(commandAddEvents.getControllerId().toString()).startTimer();
-        }
-    }
+//    /**
+//     * Подсчет времени, которое не работал терминал
+//     * @param commandAddEvents CommandAddEvents
+//     */
+//    private void terminalOutOfWorkLatencyCalc(CommandAddEvents commandAddEvents) {
+//        if(commandAddEvents.getEventType() == EventCode.EV_TERM_POWER_ON.getCode()) {
+//            requestTimer_terminalOutOfWorkLatency.observeDuration();
+//        }
+//        else {
+//            requestTimer_terminalOutOfWorkLatency = terminalOutOfWorkLatency.labels(commandAddEvents.getControllerId().toString()).startTimer();
+//        }
+//    }
 
     /**
      * Подсчте времени нахождения авто на проходной
