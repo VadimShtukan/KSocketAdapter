@@ -14,7 +14,7 @@ public class CommandReadPermitController implements CommandOrchestrator<CommandR
             .build()
             .buckets(0.1, 0.5, 1, 2, 5, 10, 20, 40, 50)
             .name("sca_read_permit_latency")
-            .help("Время выполнения пакета в БД ЕИС")
+            .help("Время выполнения ReadPermit пакета в БД ЕИС")
             .labelNames("controllerId")
             .register();
     private Histogram.Timer timer_raedPermitLatency;
@@ -22,7 +22,7 @@ public class CommandReadPermitController implements CommandOrchestrator<CommandR
     private static final Counter readPermitAccessDenied = Counter
             .build()
             .name("sca_read_permit_access_denied_total")
-            .help("Количество отказов в проезде на проходной")
+            .help("Количество отказов в проезде на проходной (ReadPermit)")
             .labelNames("terminalId")
             .register();
 

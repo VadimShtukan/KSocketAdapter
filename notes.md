@@ -1,6 +1,12 @@
 {"command":"readPermit", "terminalID":"142", "access":"", "step":"start" } 
 {"command":"readPermit", "terminalID":"142", "access":"0", "step":"end" }
 {"command":"readPermit", "terminalID":"142", "access":"1", "step":"end" }
+
+
+{"command":"confirmPermit", "terminalID":"142", "step":"start" } 
+{"command":"confirmPermit", "terminalID":"142", "step":"end" }
+{"command":"confirmPermit", "terminalID":"142", "step":"end" }
+
  
  
  

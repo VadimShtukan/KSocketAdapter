@@ -60,7 +60,6 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
         if(commandAddEvents.getEventType() == EventCode.EV_TERM_POWER_ON.getCode()) {
             requestTimer_terminalOutOfWorkLatency.observeDuration();
         }
-
         else {
             requestTimer_terminalOutOfWorkLatency = terminalOutOfWorkLatency.labels(commandAddEvents.getControllerId().toString()).startTimer();
         }
@@ -80,6 +79,7 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
         //Шлагбаум закрыт (конец отсчета времени)
         if(requestTimer_carKppPassLatency != null && commandAddEvents.getEventType() == EventCode.EV_BARR_AUTOCLOSED.getCode()){
             requestTimer_carKppPassLatency.observeDuration();
+            requestTimer_carKppPassLatency = null;
         }
     }
 }
