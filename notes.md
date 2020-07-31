@@ -7,8 +7,16 @@
 {"command":"confirmPermit", "terminalID":"142", "step":"end" }
 {"command":"confirmPermit", "terminalID":"142", "step":"end" }
 
+
+{"command":"confirmPermit", "terminalID":"141", "step":"start" } 
+{"command":"confirmPermit", "terminalID":"141", "step":"end" }
+
+{"command":"confirmPermit", "terminalID":"142", "step":"start" } 
+{"command":"confirmPermit", "terminalID":"142", "step":"end" } 
  
  
+ {"command":"transaction", "terminalID":"142", "step":"start" } 
+ {"command":"transaction", "terminalID":"142", "step":"end" } 
  
 {"command":"startConfirmPermit", "terminalID":"142"} 
 {"command":"startConfirmPermit", "terminalID":"142"} 

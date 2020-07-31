@@ -42,11 +42,7 @@ public class WorkerSocketServerRunnable implements Runnable{
 
     @Autowired
     private CommandListener commandListener;
-    /**
-     *
-     * @param clientSocket
-     * @param serverText
-     */
+
     public WorkerSocketServerRunnable(Socket clientSocket, String serverText, String socketSecurityKey) {
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
@@ -83,10 +79,6 @@ public class WorkerSocketServerRunnable implements Runnable{
         }
     }
 
-    /**
-     *
-     * @throws IOException
-     */
     private void doReadCommandFromClient() throws IOException {
         while(true) {
             try {
@@ -112,19 +104,17 @@ public class WorkerSocketServerRunnable implements Runnable{
                     logger.error("CommandListener.readCommand exception: " + e.getClass().getName());
                     this.outStream.println("ER");
                 }
-                requestTimer_workerLatency.observeDuration();
 
             }catch (SocketException e){
                 //breaker
                 throw new SocketException(e.getMessage());
             }
+            finally {
+                requestTimer_workerLatency.observeDuration();
+            }
         }
     }
 
-    /**
-     *
-     * @throws IOException
-     */
     private void disconnect() {
         try {
             this.output.close();
@@ -134,12 +124,6 @@ public class WorkerSocketServerRunnable implements Runnable{
         }
     }
 
-    /**
-     *
-     * @param loginAttempts
-     * @throws IOException
-     * @throws LoginException
-     */
     private void authoriseClient(int loginAttempts) throws IOException, LoginException {
         for(int i=0; i<=loginAttempts-1; i++){
             String readInputLine = this.inStream.readLine();
@@ -160,11 +144,6 @@ public class WorkerSocketServerRunnable implements Runnable{
         throw new LoginException();
     }
 
-    /**
-     *
-     * @param key
-     * @throws LoginException
-     */
     private void checkLogin(String key) throws LoginException {
         if(!key.equals(this.socketSecurityKey)){
             throw new LoginException("Key is not correct!");
