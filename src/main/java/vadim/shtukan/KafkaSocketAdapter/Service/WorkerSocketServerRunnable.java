@@ -109,7 +109,7 @@ public class WorkerSocketServerRunnable implements Runnable{
                 }catch (Exception e){
                     clientCommandErrorWorkerCounter.inc();
 
-                    logger.error("CommandListener.readCommand exception: " + e.getMessage());
+                    logger.error("CommandListener.readCommand exception: " + e.getClass().getName());
                     this.outStream.println("ER");
                 }
                 requestTimer_workerLatency.observeDuration();

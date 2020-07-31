@@ -21,18 +21,22 @@ public class CommandAddEventsController implements CommandOrchestrator<CommandAd
             .labelNames("controllerId", "eventType")
             .register();
 
-    private static final Histogram carKppPassLatency = Histogram.build()
+    private static final Histogram carKppPassLatency = Histogram
+            .build()
             .buckets(1, 30, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280)
             .labelNames("controllerId")
             .name("sca_car_pass_kpp_latency")
-            .help("Время, которое авто проверяется на КПП.").register();
+            .help("Время, которое авто проверяется на КПП.")
+            .register();
     private Histogram.Timer requestTimer_carKppPassLatency;
 
-    private static final Histogram terminalOutOfWorkLatency = Histogram.build()
+    private static final Histogram terminalOutOfWorkLatency = Histogram
+            .build()
             .buckets(60, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 1560)
             .labelNames("controllerId")
             .name("sca_terminal_out_of_work_latency")
-            .help("Время, которое не работал терминал.").register();
+            .help("Время, которое не работал терминал.")
+            .register();
     private Histogram.Timer requestTimer_terminalOutOfWorkLatency;
 
     @Override

@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CommandTest.class, name = "test"),
         @JsonSubTypes.Type(value = NotRealised.class, name = "NotRealised"),
-        @JsonSubTypes.Type(value = CommandAddEvents.class, name = "addEvents")
+        @JsonSubTypes.Type(value = CommandAddEvents.class, name = "addEvents"),
+        @JsonSubTypes.Type(value = CommandReadPermit.class, name = "readPermit")
 })
 public class SocketCommand {
 }
