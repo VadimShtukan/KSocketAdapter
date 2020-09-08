@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>vadim.shtukan</groupId>
 	<artifactId>KafkaSocketAdapter</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.5</version>
 	<name>KafkaSocketAdapter</name>
 	<description>Kafka Socket Adapter for legacy client </description>
 
@@ -88,3 +88,4 @@
 	</build>
 
 </project>
+
