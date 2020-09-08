@@ -12,7 +12,7 @@ public class CommandConfirmPermitController implements CommandOrchestrator<Comma
 
     private static final Histogram confirmPermitLatency = Histogram
             .build()
-            .buckets(0.1, 0.5, 1, 2, 5, 10, 20, 40, 50)
+            .buckets(0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1, 1.4, 1.8, 2, 3, 5, 10, 20, 40, 50)
             .name("sca_confirm_permit_latency")
             .help("Время выполнения ConfirmPermit пакета в БД ЕИС")
             .labelNames("controllerId")

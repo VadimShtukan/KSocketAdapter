@@ -13,7 +13,7 @@ public class CommandTransactionController implements CommandOrchestrator<Command
 
     private static final Histogram transactionLatency = Histogram
             .build()
-            .buckets(0.1, 0.5, 1, 2, 5, 10, 20, 40, 50)
+            .buckets(0.05, 1, 0.2, 0.4, 0.6, 0.8, 1, 1.4, 1.8, 2, 3, 5, 10, 20, 40, 50)
             .name("sca_transaction_latency")
             .help("Время выполнения Transaction пакета в БД ЕИС")
             .labelNames("controllerId")
